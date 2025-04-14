@@ -13,7 +13,7 @@ This Jupyter notebook implements a Retrieval-Augmented Generation (RAG) system u
 ## Setup
 
 1. **Environment Variables**: Ensure you have the `GEMINI_API_KEY` set in your environment.
-2. **Dependencies**: Install required libraries in requirements.txt
+2. **Dependencies**: Install required libraries in `requirements.txt`
 
 
 ## Usage
