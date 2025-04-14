@@ -2,7 +2,7 @@
 
 A futuristic, interactive Retrieval-Augmented Generation (RAG) system powered by **Gemini**, **FAISS**, and a stylish **Streamlit GUI** — designed to answer domain-specific questions from documents like rulebooks, manuals, and more.
 
-![Screenshot](./imgaes/ui.jpg)
+![UI](images/ui.jpg)
 
 ---
 
