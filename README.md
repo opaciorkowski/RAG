@@ -1,36 +1,85 @@
-# RAG System with Gemini and FAISS
+# 🤖 RAG Chat Assistant
 
-This Jupyter notebook implements a Retrieval-Augmented Generation (RAG) system using the Gemini language model and FAISS vector store. Here's a brief overview:
+A futuristic, interactive Retrieval-Augmented Generation (RAG) system powered by **Gemini**, **FAISS**, and a stylish **Streamlit GUI** — designed to answer domain-specific questions from documents like rulebooks, manuals, and more.
 
-## Overview
+![Screenshot](./imgaes/ui.jpg)
 
-- **Purpose**: To create a conversational AI system that can answer questions based on a given document.
-- **Components**:
-  - **Gemini**: A language model for generating responses.
-  - **FAISS**: A vector store for efficient document retrieval.
-  - **LangChain**: A framework for building applications with language models.
+---
 
-## Setup
+## 🚀 Features
 
-1. **Environment Variables**: Ensure you have the `GEMINI_API_KEY` set in your environment.
-2. **Dependencies**: Install required libraries in `requirements.txt`
+- ✅ Conversational interface styled like ChatGPT
+- 🔍 Context-aware search with FAISS vector store
+- 🧠 Optional reranking using CrossEncoder
+- 🎯 Prompt strategies:
+  - `zero_shot`: direct answering
+  - `cot`: chain-of-thought reasoning
+  - `react`: reasoning + action
+- 🧾 Memory-enabled multi-turn RAG
+- 📜 Chat history and Markdown-friendly answers
+
+---
+
+## 📦 Components
+
+| Module         | Purpose                                |
+|----------------|----------------------------------------|
+| `Gemini`       | Large language model (LLM)             |
+| `FAISS`        | Efficient vector similarity search     |
+| `LangChain`    | Orchestration of LLM + retriever       |
+| `Streamlit`    | Interactive frontend                   |
+| `CrossEncoder` | (Optional) reranker for better accuracy|
+
+---
+
+## 🛠️ Setup
+
+### 1. Environment
+Make sure you have:
+- Python ≥ 3.9
+- Your `GEMINI_API_KEY` set in environment variables
+
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the app
+```bash
+streamlit run app.py
+```
+
+---
+
+## 🧪 Example Queries
+
+You can try:
+
+- `How to win a game?`
+- `What is haste?`
+- `Explain the stack rule in MTG.`
+- `What are Prize cards in Pokémon TCG?`
+
+---
+
+## 📄 Documents Used
+
+By default, the system loads and indexes:
+- **Magic: The Gathering Comprehensive Rules**
+- **Monopoly rulebook**
+- **Pokemon TCG rulebook**
+
+---
+
+## 💡 Notes
+
+- Reranking is optional and configurable.
+- Prompt type affects how the assistant reasons.
+- Answers are grounded in the indexed documents, not open-ended hallucinations.
+
+---
 
 
-## Usage
+## 🧾 License
 
-1. **Download and Process Document**: The system downloads a PDF document, processes it into chunks, and stores these chunks in a FAISS vector store.
-2. **Create RAG Chain**: A conversational retrieval chain is created using the Gemini model and the FAISS vector store.
-3. **Query the System**: You can ask questions, and the system will retrieve relevant information from the document to answer them.
-
-## Example Queries
-
-- Can you explain the concept of 'combat' in simple terms?
-- How does one win a game of Magic: The Gathering?
-- What is haste?
-
-## Notes
-
-- If the question is not related to the context, the system will respond with "I don't know."
-- The document used in this example is the Magic: The Gathering Comprehensive Rules.
-
-
+MIT — use freely and responsibly.
