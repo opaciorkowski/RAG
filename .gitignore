@@ -172,3 +172,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# App specific
+documents/
+faiss_index/
+memory_vectorstore/
