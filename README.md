@@ -13,7 +13,7 @@ This Jupyter notebook implements a Retrieval-Augmented Generation (RAG) system u
 ## Setup
 
 1. **Environment Variables**: Ensure you have the `GEMINI_API_KEY` set in your environment.
-2. **Dependencies**: Install required libraries in requirements.txt
+2. **Dependencies**: Install required libraries in `requirements.txt`
 
 
 ## Usage
@@ -21,11 +21,6 @@ This Jupyter notebook implements a Retrieval-Augmented Generation (RAG) system u
 1. **Download and Process Document**: The system downloads a PDF document, processes it into chunks, and stores these chunks in a FAISS vector store.
 2. **Create RAG Chain**: A conversational retrieval chain is created using the Gemini model and the FAISS vector store.
 3. **Query the System**: You can ask questions, and the system will retrieve relevant information from the document to answer them.
-
-## Running the System
-
-- **Build the RAG System**: Run the `build_rag_system` function with a document URL to set up the system.
-- **Test Queries**: Use the `query_rag` function to ask questions and get answers.
 
 ## Example Queries
 
