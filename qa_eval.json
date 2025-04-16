@@ -1,0 +1,15 @@
+[
+    {
+      "question": "What is a Pokémon EX card?",
+      "ground_truth": "Pokémon-EX cards are a special kind of card that have more HP and stronger attacks than normal cards. When knocked out, they give the opponent 2 Prize cards."
+    },
+    {
+      "question": "What does haste do in Magic: The Gathering?",
+      "ground_truth": "Haste is a keyword that allows a creature to attack or use abilities as soon as it enters the battlefield, bypassing summoning sickness."
+    },
+    {
+      "question": "How can a player build a hotel in Monopoly?",
+      "ground_truth": "A player must have four houses on every property in a color set to buy a hotel. The player exchanges the houses for one hotel and pays the bank the cost listed on the title deed."
+    }
+  ]
+  
