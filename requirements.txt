@@ -1,8 +1,14 @@
-faiss-cpu
+streamlit
 python-dotenv
 requests
+faiss-cpu
+numpy
+pandas
 sentence-transformers
 langchain
 langchain-community
+langchain-core
+langchain-openai
 langchain-google-genai
-langchain-huggingface
+ragas
+import-ipynb

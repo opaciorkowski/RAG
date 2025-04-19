@@ -1,47 +1,42 @@
-# 🤖 RAG Chat Assistant
+# RAG Chat Assistant
 
-A futuristic, interactive Retrieval-Augmented Generation (RAG) system powered by **Gemini**, **FAISS**, and a stylish **Streamlit GUI** — designed to answer domain-specific questions from documents like rulebooks, manuals, and more.
+A fully interactive, dark-themed Retrieval-Augmented Generation (RAG) chatbot built with Streamlit, powered by LangChain, Gemini / GPT, and FAISS. Paste PDF links and chat with your documents in real time.
 
 ![UI](images/ui.jpg)
 
 ---
 
-## 🚀 Features
+## Features
 
-- ✅ Conversational interface styled like ChatGPT
-- 🔍 Context-aware search with FAISS vector store
-- 🧠 Optional reranking using CrossEncoder
-- 🎯 Prompt strategies:
-  - `zero_shot`: direct answering
-  - `cot`: chain-of-thought reasoning
-  - `react`: reasoning + action
-- 🧾 Memory-enabled multi-turn RAG
-- 📜 Chat history and Markdown-friendly answers
-
----
-
-## 📦 Components
-
-| Module         | Purpose                                |
-|----------------|----------------------------------------|
-| `Gemini`       | Large language model (LLM)             |
-| `FAISS`        | Efficient vector similarity search     |
-| `LangChain`    | Orchestration of LLM + retriever       |
-| `Streamlit`    | Interactive frontend                   |
-| `CrossEncoder` | (Optional) reranker for better accuracy|
+- Sleek, dark UI with custom chat bubbles  
+- Paste public PDF URLs to index and query instantly  
+- Multi-turn memory-powered conversations  
+- Prompt strategies: `zero_shot`, `cot`, `react`, `elaborate`, `explain_like_5`, `meta`  
+- FAISS vector search + optional CrossEncoder reranking  
+- Duplicate document skipping  
+- Gemini 2.0 Flash or GPT-3.5 support  
+- Expandable chat history  
 
 ---
 
-## 🛠️ Setup
+## Getting Started
 
-### 1. Environment
-Make sure you have:
-- Python ≥ 3.9
-- Your `GEMINI_API_KEY` set in environment variables
-
-### 2. Install dependencies
+### 1. Install dependencies
 ```bash
 pip install -r requirements.txt
+```
+
+For Gemini users:
+```bash
+pip install langchain-google-genai
+```
+
+### 2. Configure environment variables
+
+Create a `.env` file:
+```env
+GEMINI_API_KEY=your_google_api_key
+OPENAI_API_KEY=your_openai_api_key
 ```
 
 ### 3. Run the app
@@ -51,35 +46,46 @@ streamlit run app.py
 
 ---
 
-## 🧪 Example Queries
+## How to Use
 
-You can try:
+- Paste a public PDF link into the sidebar  
+- The app will download, chunk, and index it  
+- Start chatting naturally!
 
-- `How to win a game?`
-- `What is haste?`
-- `Explain the stack rule in MTG.`
-- `What are Prize cards in Pokémon TCG?`
-
----
-
-## 📄 Documents Used
-
-By default, the system loads and indexes:
-- **Magic: The Gathering Comprehensive Rules**
-- **Monopoly rulebook**
-- **Pokemon TCG rulebook**
+Example queries:
+- `What are the win conditions in Monopoly?`
+- `Explain Pokémon energy cards like I'm five`
+- `What is the stack rule in Magic the Gathering?`
 
 ---
 
-## 💡 Notes
+## Sidebar Controls
 
-- Reranking is optional and configurable.
-- Prompt type affects how the assistant reasons.
-- Answers are grounded in the indexed documents, not open-ended hallucinations.
+- Rewrite query — optimize user input before retrieval  
+- Use reranker — reorders context chunks by relevance  
+- Prompt style — control reasoning: step-by-step, CoT, ReAct  
 
 ---
 
+## Tech Stack
 
-## 🧾 License
+| Component        | Tool                          |
+|------------------|-------------------------------|
+| LLM              | Gemini / OpenAI GPT           |
+| Embedding Model  | HuggingFace Transformers      |
+| Vector DB        | FAISS                         |
+| Reranker         | Sentence Transformers         |
+| UI               | Streamlit                     |
+| Framework        | LangChain                     |
 
-MIT — use freely and responsibly.
+---
+
+## Preloaded Docs
+
+- Pokémon TCG Rulebook  
+- Monopoly (Classic)  
+- Magic the Gathering Comprehensive Rules  
+ 
+ ---
+
+
