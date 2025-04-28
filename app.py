@@ -1,5 +1,6 @@
 import streamlit as st
 from pathlib import Path
+import import_ipynb
 from advanced_rag import initialize_rag, create_rag_chain
 
 st.set_page_config(page_title="RAG Chat Assistant", page_icon="🧠", layout="wide")
