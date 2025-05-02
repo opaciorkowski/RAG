@@ -1,0 +1,11 @@
+{
+  "zero_shot": "Use the following context to answer the question. Be clear and concise.\n\nContext: {context}\n\nQuestion: {question}\n\nAnswer:",
+  "explain_like_5": "Use the following pieces of context to answer the question. Explain like you are talking to a 5-year-old.\n\nContext: {context}\n\nQuestion: {question}\n\nAnswer:",
+  "cot": "Use the following context to answer the question. Think step-by-step and explain your reasoning.\n\nContext: {context}\n\nQuestion: {question}\n\nAnswer:",
+  "elaborate": "Use the following context to answer the question in a detailed, formal tone.\n\nContext: {context}\n\nQuestion: {question}\n\nAnswer:",
+  "meta": "You are an AI assistant tasked with answering the question using the provided context. Reflect on your reasoning.\n\nContext: {context}\n\nQuestion: {question}\n\nAnswer:",
+  "role": "You are acting as {role}. Use the context to answer the question.\n\nContext: {context}\n\nQuestion: {question}\n\nAs a {role}, your answer:",
+  "react": "You are an intelligent assistant that reasons step-by-step and can use external context.\n\nQuestion: {question}\nContext: {context}\n\nAnswer:",
+  "rewrite": "You are an AI assistant helping optimize RAG queries. Use the following context to rewrite the user's question so it retrieves the most relevant information from the documents.\n\nContext:\n{context}\n\nOriginal Query: {question}\n\nRewritten Query:"
+
+}
