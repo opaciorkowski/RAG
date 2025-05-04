@@ -1,49 +1,77 @@
-from typing import List, Any
-from langchain.schema import Document
+from typing import List
+from langchain_core.documents import Document
+from langchain_core.retrievers import BaseRetriever
 from sentence_transformers import CrossEncoder
-from langchain.schema import BaseRetriever
+from backend.logging import get_logger 
 
-class LLMRerankerRetriever(BaseRetriever):
-    def __init__(self, vectorstore: Any, top_k_chunks=20, top_k_parents=4):
-        self.top_k_chunks = top_k_chunks
-        self.top_k_parents = top_k_parents
-        self.vectorstore = vectorstore
+def create_parent_document_llm_reranker(vectorstore, top_k_chunks=20, top_k_parents=4):
+    class LLMRerankerRetriever(BaseRetriever):
+        def __init__(self):
+            super().__init__()
+            object.__setattr__(self, "logger", get_logger(self.__class__.__name__))
+            self.logger.info("LLMRerankerRetriever initialized.")
 
-    def get_relevant_documents(self, query: str) -> List[Document]:
-        cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-12-v2")
-        relevant_chunks_with_scores = self.vectorstore.similarity_search_with_score(query, k=self.top_k_chunks)
-        chunks = [doc for doc, _ in relevant_chunks_with_scores]
-        scores = [score for _, score in relevant_chunks_with_scores]
+        def _get_relevant_documents(self, query: str) -> List[Document]:
+            self.logger.info(f"Starting reranked retrieval for query: {query}")
+            cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
 
-        parent_docs = {}
-        for chunk, score in zip(chunks, scores):
-            parent_id = chunk.metadata.get("parent_id", f"doc_{len(parent_docs)}")
-            if parent_id not in parent_docs:
-                parent_docs[parent_id] = {
-                    "chunks": [],
-                    "scores": [],
-                    "source": chunk.metadata.get("parent_source", "unknown")
-                }
-            parent_docs[parent_id]["chunks"].append(chunk)
-            parent_docs[parent_id]["scores"].append(score)
+            # Step 1: Retrieve top-k chunks
+            results = vectorstore.similarity_search_with_score(query, k=top_k_chunks)
+            self.logger.info(f"Retrieved {len(results)} chunks from vectorstore.")
 
-        reranked_parents = []
-        for parent_id, parent in parent_docs.items():
-            full_text = "\n".join([c.page_content for c in parent["chunks"]])
-            try:
-                rerank_score = float(self.cross_encoder.predict([(query, full_text)])[0])
-            except Exception:
-                rerank_score = 0.0
-            for c in parent["chunks"]:
-                c.metadata["rerank_score"] = rerank_score
-            reranked_parents.append({
-                "chunks": parent["chunks"],
-                "rerank_score": rerank_score
-            })
+            chunks = [doc for doc, _ in results]
+            scores = [score for _, score in results]
 
-        reranked_parents.sort(key=lambda x: x["rerank_score"], reverse=True)
-        top_docs = []
-        for parent in reranked_parents[:self.top_k_parents]:
-            top_docs.extend(parent["chunks"])
+            # Step 2: Group chunks by parent
+            parent_docs = {}
+            for chunk, score in zip(chunks, scores):
+                parent_id = chunk.metadata.get("parent_id") or chunk.metadata.get("doc_id", f"doc_{len(parent_docs)}")
+                if parent_id not in parent_docs:
+                    parent_docs[parent_id] = {
+                        "chunks": [],
+                        "scores": [],
+                        "source": chunk.metadata.get("parent_source", "unknown")
+                    }
+                parent_docs[parent_id]["chunks"].append(chunk)
+                parent_docs[parent_id]["scores"].append(score)
 
-        return top_docs
+            self.logger.info(f"Grouped chunks into {len(parent_docs)} parent documents.")
+
+            # Step 3: Rerank parents
+            reranked = []
+            for parent_id, parent in parent_docs.items():
+                parent["chunks"].sort(key=lambda c: (c.metadata.get("page", 0), c.metadata.get("chunk_index", 0)))
+                full_text = "\n".join(chunk.page_content for chunk in parent["chunks"])
+
+                try:
+                    rerank_score = float(cross_encoder.predict([(query, full_text)])[0])
+                except Exception as e:
+                    self.logger.warning(f"CrossEncoder prediction failed for parent {parent_id}: {e}")
+                    rerank_score = 0.0
+
+                self.logger.info(f"Rerank score for parent {parent_id}: {rerank_score:.4f}")
+
+                for chunk in parent["chunks"]:
+                    chunk.metadata["rerank_score"] = rerank_score
+
+                reranked.append({
+                    "id": parent_id,
+                    "chunks": parent["chunks"],
+                    "rerank_score": rerank_score,
+                    "source": parent["source"]
+                })
+
+            reranked.sort(key=lambda x: x["rerank_score"], reverse=True)
+
+            top_docs = []
+            for i, parent in enumerate(reranked[:top_k_parents]):
+                self.logger.info(f"Selected parent {i+1}: {parent['id']} (Score: {parent['rerank_score']:.4f})")
+                top_docs.extend(parent["chunks"])
+
+            self.logger.info(f"Returning {len(top_docs)} top-ranked chunks.")
+            return top_docs
+
+        async def _aget_relevant_documents(self, query: str):
+            raise NotImplementedError("Async version is not implemented.")
+
+    return LLMRerankerRetriever()

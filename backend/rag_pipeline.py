@@ -8,7 +8,7 @@ from langchain_openai import ChatOpenAI
 from backend.document_handler import DocumentHandler
 from backend.vectorstore_manager import VectorstoreManager
 from prompts.prompt_manager import PromptManager
-from backend.reranker import LLMRerankerRetriever
+from backend.reranker import create_parent_document_llm_reranker
 from backend.logging import get_logger
 from sentence_transformers import CrossEncoder
 from langchain.prompts import PromptTemplate
@@ -42,7 +42,7 @@ class RAGPipeline:
             return GoogleGenerativeAI(api_key=os.getenv("GEMINI_API_KEY"), model="gemini-2.0-flash")
         elif os.getenv("OPENAI_API_KEY"):
             self.logger.info("Using OpenAI model.")
-            return ChatOpenAI(api_key=os.getenv("OPENAI_API_KEY"), model="gpt-3.5-turbo", temperature=0.0)
+            return ChatOpenAI(api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4.1-mini", temperature=0.0)
         raise ValueError("Invalid LLM configuration. Please set OPENAI_API_KEY or GEMINI_API_KEY.")
 
     def _update_retriever(self):
@@ -52,7 +52,11 @@ class RAGPipeline:
 
         if self.use_reranking:
             self.logger.info("Using reranker retriever.")
-            self.retriever = LLMRerankerRetriever(vectorstore=self.vectorstore)
+            self.retriever = create_parent_document_llm_reranker(
+                vectorstore=self.vectorstore,
+                top_k_chunks=self.top_k_chunks,
+                top_k_parents=self.retriever_k
+            )
         else:
             self.logger.info(f"Using standard retriever with k={self.retriever_k}.")
             self.retriever = self.vectorstore.as_retriever(
