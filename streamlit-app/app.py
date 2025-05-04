@@ -2,9 +2,9 @@ import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import streamlit as st
 from pathlib import Path
-from dotenv import load_dotenv
+from dotenv import load_dotenv, set_key
 from backend.rag_pipeline import RAGPipeline
-
+set_key(".env", "STREAMLIT_WATCH_USE_POLLING", "true")
 load_dotenv()
 st.set_page_config(page_title="RAG Chat Assistant", page_icon="🧠", layout="wide")
 
