@@ -1,5 +1,5 @@
 import os
-from langchain_core.memory import ConversationBufferMemory 
+from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain_openai import OpenAIEmbeddings
 from langchain_google_genai import GoogleGenerativeAI
