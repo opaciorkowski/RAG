@@ -82,6 +82,7 @@ def handle_query(query):
             answer = result.get("answer", "🤔 I couldn't find a good answer.")
             st.markdown(f"<div class='chat-message-assistant'>🤖 {answer}</div>", unsafe_allow_html=True)
             st.session_state.chat_history.append((query, answer))
+
             with st.expander("Sources", expanded=False):
                 if "source_documents" in result:
                     seen = set()
@@ -90,9 +91,15 @@ def handle_query(query):
                         if chunk_id in seen:
                             continue
                         seen.add(chunk_id)
+
                         page = doc.metadata.get("page", "N/A")
                         src = doc.metadata.get("source", doc.metadata.get("parent_source", "unknown"))
+                        rerank_score = doc.metadata.get("rerank_score")
+
                         st.markdown(f"**Source {i+1} — {src}, page {page}**")
+                        if rerank_score is not None:
+                            st.markdown(f"Rerank Score: `{rerank_score:.4f}`")
+
                         st.code(doc.page_content.strip()[:500] + ("..." if len(doc.page_content) > 500 else ""), language="text")
 
 def render_chat_history():
