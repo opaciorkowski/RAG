@@ -90,4 +90,16 @@ Example queries:
  
  ---
 
+## RAGAS Evaluation 
+You can evaluate your RAG pipeline using the included notebook `ragas_evaluation.ipynb` located in the `notebooks` folder.
+### What it does:
+- Runs quality checks on your RAG answers
+- Scores them for relevance, correctness, and source grounding
+- Helps you improve prompt choice, chunking, and retrievers
 
+### How to use:
+- Open ragas_evaluation.ipynb in Jupyter or VS Code
+- Fill in test questions and expected answers
+- Run the notebook to get evaluation scores
+
+Sample questions with answers are provided in `notebooks/qa_eval.json`
