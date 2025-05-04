@@ -20,28 +20,29 @@ A fully interactive, dark-themed Retrieval-Augmented Generation (RAG) chatbot bu
 ---
 
 ## Getting Started
-
+### 0. Setup Venv
+```bash
+python -m venv rag_venv
+rag_venv\Scripts\activate.bat
+```
 ### 1. Install dependencies
+This might take a while
 ```bash
 pip install -r requirements.txt
 ```
 
-For Gemini users:
-```bash
-pip install langchain-google-genai
-```
-
 ### 2. Configure environment variables
 
-Create a `.env` file:
+Create a `.env` file (only one api-key is needed):
 ```env
 GEMINI_API_KEY=your_google_api_key
 OPENAI_API_KEY=your_openai_api_key
+STREAMLIT_WATCH_USE_POLLING=true
 ```
 
 ### 3. Run the app
 ```bash
-streamlit run app.py
+streamlit run streamlit-app/app.py
 ```
 
 ---
@@ -64,6 +65,8 @@ Example queries:
 - Rewrite query — optimize user input before retrieval  
 - Use reranker — reorders context chunks by relevance  
 - Prompt style — control reasoning: step-by-step, CoT, ReAct  
+- Check logs — see what is going on inside the app
+- Import documents — test RAG on your own PDFs
 
 ---
 
@@ -71,10 +74,9 @@ Example queries:
 
 | Component        | Tool                          |
 |------------------|-------------------------------|
-| LLM              | Gemini / OpenAI GPT           |
-| Embedding Model  | HuggingFace Transformers      |
+| LLM              | Gemini 2.0 Flash / gpt-4.1-mini|
+| Embedding Model  | text-embedding-ada-002        |
 | Vector DB        | FAISS                         |
-| Reranker         | Sentence Transformers         |
 | UI               | Streamlit                     |
 | Framework        | LangChain                     |
 

@@ -15,14 +15,12 @@ def create_parent_document_llm_reranker(vectorstore, top_k_chunks=20, top_k_pare
             self.logger.info(f"Starting reranked retrieval for query: {query}")
             cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
 
-            # Step 1: Retrieve top-k chunks
             results = vectorstore.similarity_search_with_score(query, k=top_k_chunks)
             self.logger.info(f"Retrieved {len(results)} chunks from vectorstore.")
 
             chunks = [doc for doc, _ in results]
             scores = [score for _, score in results]
 
-            # Step 2: Group chunks by parent
             parent_docs = {}
             for chunk, score in zip(chunks, scores):
                 parent_id = chunk.metadata.get("parent_id") or chunk.metadata.get("doc_id", f"doc_{len(parent_docs)}")
@@ -37,7 +35,6 @@ def create_parent_document_llm_reranker(vectorstore, top_k_chunks=20, top_k_pare
 
             self.logger.info(f"Grouped chunks into {len(parent_docs)} parent documents.")
 
-            # Step 3: Rerank parents
             reranked = []
             for parent_id, parent in parent_docs.items():
                 parent["chunks"].sort(key=lambda c: (c.metadata.get("page", 0), c.metadata.get("chunk_index", 0)))
